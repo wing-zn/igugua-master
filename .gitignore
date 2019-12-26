@@ -1,0 +1,30 @@
+# diaowen.net maven ignore
+target
+classes
+.gitgnore
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+*rebel.xml
+# temp ignore
+*.cache
+*.diff
+*.patch
+*.tmp
+# Compiled class file
+*.class
+
+# Log file
+*.log
+*.out
+*.gz
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar

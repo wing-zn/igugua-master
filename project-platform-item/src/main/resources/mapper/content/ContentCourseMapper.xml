@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzydz.platform.modules.user.mapper.ContentCourseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mzydz.platform.modules.user.entity.PO.content.ContentCourse">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="title" property="title" />
+        <result column="details" property="details" />
+        <result column="create_time" property="createTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="timestamp" property="timestamp" />
+        <result column="view_nums" property="viewNums" />
+        <result column="img_cover" property="imgCover" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, title, details, create_time, is_deleted, timestamp, view_nums,img_cover
+    </sql>
+
+    <select id="findByCondition"
+            parameterType="com.mzydz.platform.modules.user.entity.PO.content.ContentCourse"
+            resultType="com.mzydz.platform.modules.user.entity.PO.content.ContentCourse">
+
+        select
+        id, user_id, title,  create_time, is_deleted, timestamp,view_nums
+        ,img_cover,details
+        from content_course
+        where is_deleted = 0
+        <if test="startDate !=null and endDate !=null ">
+            and (create_time between #{startDate} and #{endDate})
+        </if>
+        order by id desc
+    </select>
+    <!--浏览量加一-->
+    <update id="updateViewNumsAddOne">
+        update  content_course set view_nums = view_nums+1
+        where id=#{id}
+    </update>
+
+</mapper>

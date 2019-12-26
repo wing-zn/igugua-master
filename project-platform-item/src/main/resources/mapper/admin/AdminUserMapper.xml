@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzydz.platform.modules.user.mapper.AdminUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mzydz.platform.modules.user.entity.PO.AdminUser">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="username" property="username"/>
+        <result column="create_time" property="createTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="timestamp" property="timestamp"/>
+        <result column="status" property="status"/>
+        <result column="is_disable" property="isDisable"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!-- 管理员列表查询 -->
+    <resultMap id="BaseResultMapVO" type="com.mzydz.platform.modules.user.entity.VO.AdminUserVO">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="nickname" property="nickname"/>
+        <result column="username" property="username"/>
+        <result column="create_time" property="createTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="is_disable" property="isDisable"/>
+        <result column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+    </resultMap>
+    <!--管理员查询-->
+    <select id="selectByChoice" resultType="com.mzydz.platform.modules.user.entity.VO.AdminUserVO">
+        select au.* ,ar.id as role_id ,ar.role_name,
+               addU.username as add_username,
+        adt.name as dept_name
+        from admin_user au
+        left join admin_user_role aur on au.id = aur.user_id
+        left join admin_role ar on ar.id = aur.role_id
+        left join admin_user addU on addU.id = au.admin_parent_id
+        left join admin_dept adt on adt.dept_id = au.admin_dept_id
+        <where>
+            au.id &gt;1 and au.is_deleted=0
+            <if test="account !=null and account !=''">
+                and au.account =#{account}
+            </if>
+            <if test="loginId !=null">
+                and au.id !=#{loginId}
+            </if>
+            <if test="adminType !=null">
+                and au.admin_type =#{adminType}
+            </if>
+            <if test="adminDeptId !=null">
+                and au.admin_dept_id =#{adminDeptId}
+            </if>
+            <if test="isDisable !=null">
+                and au.is_disable =#{isDisable}
+            </if>
+            <if test="username !=null and username !=''">
+                and au.username like '${username}%'
+            </if>
+        </where>
+        order by au.id desc
+    </select>
+
+    <!--获取登录后用户信息-->
+    <select id="getAdminUserInfo" resultType="com.mzydz.platform.modules.user.entity.VO.adminuser.AdminUserInfoVO">
+        select *
+        from admin_user
+        where id = #{id}
+    </select>
+
+</mapper>

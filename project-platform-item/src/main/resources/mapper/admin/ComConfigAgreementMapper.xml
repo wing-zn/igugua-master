@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzydz.platform.modules.user.mapper.ComConfigAgreementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mzydz.platform.modules.sysconfig.entity.PO.ComConfigAgreement">
+        <id column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="create_time" property="createTime" />
+        <result column="type" property="type" />
+        <result column="timestamp" property="timestamp" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, content, create_time, type, timestamp
+    </sql>
+
+        <!--查询系统协议-->
+    <select id="getAppUserAgreementAndLegalNotices" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from com_config_agreement
+        <where>
+            <if test="comConfigAgreement.type != null">
+                type= #{comConfigAgreement.type}
+            </if>
+            <if test="comConfigAgreement.id != null">
+                id = #{comConfigAgreement.id}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mzydz.platform.modules.sysconfig.entity.PO.ComConfigAgreement">
+        update com_config_agreement
+        <set>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{creatTime},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+
+        <where>
+            <if test="type != null">
+                type=#{type}
+            </if>
+            <if test="id != null">
+               and id = #{id,jdbcType=BIGINT}
+            </if>
+        </where>
+    </update>
+</mapper>

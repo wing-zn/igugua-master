@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mzydz.platform.modules.user.mapper.AdminCountMapper">
+
+
+    <select id="getHomePageCountInfo" resultType="com.mzydz.platform.modules.user.entity.VO.homeCount.HomeCountVO">
+        select (select count(*) from admin_user)                      as userAll,
+               (select count(*) from admin_user where admin_type = 0) as userSys,
+               (select count(*) from admin_user where admin_type = 1) as userBranch
+        from dual
+    </select>
+</mapper>
